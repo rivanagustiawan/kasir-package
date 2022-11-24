@@ -20,5 +20,12 @@
         "psr-4": {
             "Rivan\\Kasir\\": "src/" 
         }
+    },
+    "extra" : {
+        "laravel": {
+            "providers": [
+                "Rivan\\Kasir\\KasirServiceProvider"
+            ]
+        }
     }
 }
