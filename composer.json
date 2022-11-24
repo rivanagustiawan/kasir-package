@@ -1,0 +1,24 @@
+{
+    "name": "rivan/kasir",
+    "description": "This for kasir",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Rivan\\Kasir\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "you@example.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload-dev": {
+        "psr-4": {
+            "Rivan\\Kasir\\": "src/" 
+        }
+    }
+}
