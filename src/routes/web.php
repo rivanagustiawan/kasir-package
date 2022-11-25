@@ -2,7 +2,7 @@
 
 use Rivan\Kasir\Http\Controllers\KasirController;
 
-Route::group(['namespace' => 'Rivan\Kasir\Http\Controllers'], function () {
+Route::group(['namespace' => 'Rivan\Kasir\Http\Controllers','middleware' => 'web'], function () {
     
 Route::get('/kasir/{id}', [KasirController::class , 'index'])->name('kasir');
 

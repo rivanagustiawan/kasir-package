@@ -11,7 +11,8 @@ class KasirController extends Controller
 {
     public function index($id){
         $data = HTTP::withHeaders([
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.Session::get('token'),
         ])->get('http://127.0.0.1:8000/api/barang-by-idcabang/'.$id);
 
         return view('kasir::kasir',[
@@ -22,7 +23,8 @@ class KasirController extends Controller
         $id = $request['id'];
 
         $data = HTTP::withHeaders([
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.Session::get('token'),
         ])->get('http://127.0.0.1:8000/api/barang/'.$id);
 
         return view('kasir::list',[
@@ -33,7 +35,8 @@ class KasirController extends Controller
     public function pesan(Request $request){
 
         $data = HTTP::withHeaders([
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.Session::get('token'),
         ])->post('http://127.0.0.1:8000/api/transaksi',$request->all());
 
         return back();
