@@ -9,17 +9,32 @@ use Illuminate\Support\Facades\Session;
 
 class KasirController extends Controller
 {
-    public function index($id){
+    public function index(){
         $data = HTTP::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer '.Session::get('token'),
-        ])->get('http://127.0.0.1:8000/api/barang-by-idcabang/'.$id);
+        ])->get('http://127.0.0.1:8000/api/barang/by/cabang');
 
         return view('kasir::kasir',[
             'data_barang' => $data['data_barang']
         ]);
     }
     public function tambah_pesanan(Request $request){
+
+        $id = $request['id'];
+
+        $data = HTTP::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.Session::get('token'),
+        ])->get('http://127.0.0.1:8000/api/barang/'.$id);
+        
+        return view('kasir::list',[
+            'data_barang' => $data['data_barang'],
+            'qty' => $request['qty']
+        ]);
+    }
+    public function cek_stok(Request $request){
+
         $id = $request['id'];
 
         $data = HTTP::withHeaders([
@@ -27,10 +42,7 @@ class KasirController extends Controller
             'Authorization' => 'Bearer '.Session::get('token'),
         ])->get('http://127.0.0.1:8000/api/barang/'.$id);
 
-        return view('kasir::list',[
-            'data_barang' => $data['data_barang'],
-            'qty' => $request['qty']
-        ]);
+        return $data['data_barang'];
     }
     public function pesan(Request $request){
 

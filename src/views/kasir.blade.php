@@ -14,16 +14,20 @@
     <div class="container py-4 px-4 mt-5">
             <form class="form-inline">
                 <div class="form-group mb-2">
-                <label for="formGroupExampleInput">Barang : </label>
-                <select name="pesanan" id="pesanan" class="form-control py-2">
-                    @foreach ($data_barang as $barang)
-                    <option value="{{ $barang['id'] }}">{{ $barang['nama_barang'] }}</option>
-                    @endforeach
-                </select>
+                  <label for="formGroupExampleInput">Barang : </label>
+                  <select name="barang" id="barang" class="form-control py-2">
+                      @foreach ($data_barang as $barang)
+                      <option value="{{ $barang['id'] }}">{{ $barang['nama_barang'] }}</option>
+                      @endforeach
+                  </select>
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
-                <label for="formGroupExampleInput">Quantity : </label>
-                <input type="number" class="form-control" id="quantity" name="quantity" oninvalid="setCustomValidity('Melebihi Stok !')">
+                  <label for="formGroupExampleInput">Stok : </label>
+                  <input type="number" class="form-control" id="stok" readonly>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="formGroupExampleInput">Quantity : </label>
+                  <input type="number" class="form-control" id="quantity" name="quantity">
                 </div>
                 <button type="button" class="btn btn-primary mb-2" id="tambah">Tambah</button>
             </form>
@@ -55,7 +59,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script>
         $('#tambah').click(function(){
-            var id = $('#pesanan').val();
+            var id = $('#barang').val();
             var qty = $('#quantity').val();
             $_token = "{{ csrf_token() }}";
             $.ajax({
@@ -66,14 +70,29 @@
                 data: {  '_token': $_token, 'id' : id, 'qty' : qty},
                 success: function(data) {
                     $('#listPesanan').append(data);
-                    $('#pesanan').prop('selectedIndex',0);
+                    $('#barang').prop('selectedIndex',0);
+                   $('#stok').val();
                     $('#quantity').val('');
                     $('#pesan').prop('disabled', false);
-
-                    
                 }
             });
         });
+
+        $('#barang').change(function(){
+          var id = $(this).val();
+          $_token = "{{ csrf_token() }}";
+            $.ajax({
+                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') },
+                url: "{{ url('/check/stok') }}",
+                type: 'POST',
+                cache: false,
+                data: {  '_token': $_token, 'id' : id},
+                success: function(data) {
+                  $('#stok').val(data.stok_barang);
+                }
+            });
+        });
+
     </script>
   </body>
 </html>
